@@ -55,6 +55,7 @@
     "unref": "readonly",
     "useAttrs": "readonly",
     "useCssModule": "readonly",
+    "useCssVars": "readonly",
     "useRoute": "readonly",
     "useRouter": "readonly",
     "useSlots": "readonly",
