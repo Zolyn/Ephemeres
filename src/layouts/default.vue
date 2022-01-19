@@ -1,43 +1,53 @@
 <template>
-    <n-config-provider :theme="theme">
-        <n-dialog-provider>
-            <n-space vertical>
-                <n-layout position="absolute">
-                    <n-layout-header class="nav" bordered>
-                        <n-page-header>
-                            <template #title>
-                                <n-text>Ephemeres</n-text>
-                            </template>
-                        </n-page-header>
-                    </n-layout-header>
-                    <n-layout position="absolute" style="top: 64px" has-sider>
-                        <n-layout-sider
-                            :native-scrollbar="false"
-                            :collapsed-width="0"
-                            collapse-mode="transform"
-                            show-trigger="bar"
-                            bordered
-                        >
-                            <n-menu :collapsed-width="0" :options="menuOptions"></n-menu>
-                        </n-layout-sider>
-                        <n-layout-content
-                            :native-scrollbar="scroll"
-                            content-style="min-height: calc(100vh - 63px); display: flex; flex-direction: column; padding: 64px 0;"
-                        >
-                            <slot />
-                            <n-back-top />
-                        </n-layout-content>
+    <div id="layout">
+        <n-config-provider :theme="theme">
+            <n-dialog-provider>
+                <n-space vertical>
+                    <n-layout position="absolute">
+                        <n-layout-header class="nav" bordered>
+                            <n-page-header>
+                                <template #title>
+                                    <n-text>Ephemeres</n-text>
+                                </template>
+                            </n-page-header>
+                        </n-layout-header>
+                        <n-layout position="absolute" style="top: 64px" has-sider>
+                            <n-layout-sider :collapsed-width="0" collapse-mode="transform" show-trigger="bar" bordered>
+                                <n-menu :collapsed-width="0" :options="menuOptions"></n-menu>
+                            </n-layout-sider>
+                            <n-layout-content
+                                class="layout-content"
+                                content-style="min-height: calc(100vh - 63px); display: flex; flex-direction: column; padding: 64px 0;"
+                            >
+                                <router-view />
+                                <n-back-top />
+                            </n-layout-content>
+                        </n-layout>
                     </n-layout>
-                </n-layout>
-            </n-space>
-        </n-dialog-provider>
-        <n-global-style />
-    </n-config-provider>
+                </n-space>
+            </n-dialog-provider>
+            <n-global-style />
+        </n-config-provider>
+    </div>
 </template>
 <script lang="ts" setup>
 import { useOsTheme, darkTheme } from 'naive-ui';
 
 const osTheme = useOsTheme();
+
+const scrollBarLight = {
+    bg: 'rgb(255, 255, 255)',
+    bar: 'rgba(0, 0, 0, 0.25)',
+    barHover: 'rgba(0, 0, 0, 0.4)',
+};
+
+const scrollBarDark = {
+    bg: 'rgb(24, 24, 28)',
+    bar: 'rgba(255, 255, 255, 0.2)',
+    barHover: 'rgba(255, 255, 255, 0.3)',
+};
+
+const scrollBarStyles = computed(() => (osTheme.value === 'light' ? scrollBarLight : scrollBarDark));
 
 const menuOptions = [
     {
@@ -107,15 +117,7 @@ const menuOptions = [
     },
 ];
 
-const theme = computed(() => {
-    return osTheme.value === 'light' ? null : darkTheme;
-});
-
-const scroll = ref(true);
-
-// onMounted(() => {
-//     scroll.value = false;
-// });
+const theme = computed(() => (osTheme.value === 'light' ? null : darkTheme));
 </script>
 
 <style>
@@ -124,5 +126,23 @@ const scroll = ref(true);
     grid-template-rows: 63px;
     align-items: center;
     padding: 0 16px;
+}
+
+.layout-content > .n-layout-scroll-container::-webkit-scrollbar {
+    width: 8px;
+    background-color: v-bind(scrollBarStyles.bg);
+}
+
+.layout-content > .n-layout-scroll-container::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: v-bind(scrollBarStyles.bar);
+}
+
+.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: v-bind(scrollBarStyles.barHover);
 }
 </style>
