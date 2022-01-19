@@ -16,6 +16,7 @@
                                 <n-menu :collapsed-width="0" :options="menuOptions"></n-menu>
                             </n-layout-sider>
                             <n-layout-content
+                                :native-scrollbar="false"
                                 class="layout-content"
                                 content-style="min-height: calc(100vh - 63px); display: flex; flex-direction: column; padding: 64px 0;"
                             >
@@ -35,19 +36,19 @@ import { useOsTheme, darkTheme } from 'naive-ui';
 
 const osTheme = useOsTheme();
 
-const scrollBarLight = {
-    bg: 'rgb(255, 255, 255)',
-    bar: 'rgba(0, 0, 0, 0.25)',
-    barHover: 'rgba(0, 0, 0, 0.4)',
-};
-
-const scrollBarDark = {
-    bg: 'rgb(24, 24, 28)',
-    bar: 'rgba(255, 255, 255, 0.2)',
-    barHover: 'rgba(255, 255, 255, 0.3)',
-};
-
-const scrollBarStyles = computed(() => (osTheme.value === 'light' ? scrollBarLight : scrollBarDark));
+// const scrollBarLight = {
+//     bg: 'rgb(255, 255, 255)',
+//     bar: 'rgba(0, 0, 0, 0.25)',
+//     barHover: 'rgba(0, 0, 0, 0.4)',
+// };
+//
+// const scrollBarDark = {
+//     bg: 'rgb(24, 24, 28)',
+//     bar: 'rgba(255, 255, 255, 0.2)',
+//     barHover: 'rgba(255, 255, 255, 0.3)',
+// };
+//
+// const scrollBarStyles = computed(() => (osTheme.value === 'light' ? scrollBarLight : scrollBarDark));
 
 const menuOptions = [
     {
@@ -128,21 +129,21 @@ const theme = computed(() => (osTheme.value === 'light' ? null : darkTheme));
     padding: 0 16px;
 }
 
-.layout-content > .n-layout-scroll-container::-webkit-scrollbar {
-    width: 8px;
-    background-color: v-bind(scrollBarStyles.bg);
-}
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*    background-color: v-bind(scrollBarStyles.bg);*/
+/*}*/
 
-.layout-content > .n-layout-scroll-container::-webkit-scrollbar-track {
-    border-radius: 10px;
-}
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar-track {*/
+/*    border-radius: 10px;*/
+/*}*/
 
-.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: v-bind(scrollBarStyles.bar);
-}
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb {*/
+/*    border-radius: 10px;*/
+/*    background-color: v-bind(scrollBarStyles.bar);*/
+/*}*/
 
-.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb:hover {
-    background-color: v-bind(scrollBarStyles.barHover);
-}
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb:hover {*/
+/*    background-color: v-bind(scrollBarStyles.barHover);*/
+/*}*/
 </style>
