@@ -10,23 +10,23 @@ export default function DebugPlugin(): Plugin {
     return {
         name: 'vite-plugin-debug',
 
-        configResolved(config) {
-            console.log('[DEBUG] Config:');
-            console.log(config);
-            console.log('Client:', config.define!['process.client']);
-            // isClient = config.define['process.client'];
-            // if (isClient) {
-            //     if (existsSync(clientDebugFile)) {
-            //         console.log('[DEBUG] Cleanning old client logs...');
-            //         unlinkSync(clientDebugFile);
-            //     }
-            //
-            //     if (existsSync(serverDebugFile)) {
-            //         console.log('[DEBUG] Cleanning old server logs...');
-            //         unlinkSync(serverDebugFile);
-            //     }
-            // }
-        },
+        // configResolved(config) {
+        //     console.log('[DEBUG] Config:');
+        //     console.log(config);
+        //     console.log('Client:', config.define!['process.client']);
+        //     // isClient = config.define['process.client'];
+        //     // if (isClient) {
+        //     //     if (existsSync(clientDebugFile)) {
+        //     //         console.log('[DEBUG] Cleanning old client logs...');
+        //     //         unlinkSync(clientDebugFile);
+        //     //     }
+        //     //
+        //     //     if (existsSync(serverDebugFile)) {
+        //     //         console.log('[DEBUG] Cleanning old server logs...');
+        //     //         unlinkSync(serverDebugFile);
+        //     //     }
+        //     // }
+        // },
 
         // transform(code: string, id: string) {
         //     if (isClient) {

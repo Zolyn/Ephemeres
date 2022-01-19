@@ -113,9 +113,9 @@ const theme = computed(() => {
 
 const scroll = ref(true);
 
-onMounted(() => {
-    scroll.value = false;
-});
+// onMounted(() => {
+//     scroll.value = false;
+// });
 </script>
 
 <style>

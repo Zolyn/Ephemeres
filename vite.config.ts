@@ -2,12 +2,11 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Pages from 'vite-plugin-pages';
-import Layouts from 'vite-plugin-vue-layouts';
 import Component from 'unplugin-vue-components/vite';
 import { resolve } from 'path';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import AutoImportsRulesPlugin from './src/plugins/auto-imports-rules';
-import DebugPlugin from './src/plugins/debug';
+// import DebugPlugin from './src/plugins/debug';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,7 +15,6 @@ export default defineConfig({
         Pages({
             routeBlockLang: 'yaml',
         }),
-        Layouts(),
         AutoImport({
             dts: true,
             include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/],

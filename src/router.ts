@@ -1,9 +1,6 @@
 // https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/router.js
 import { createMemoryHistory, createRouter as _createRouter, createWebHistory } from 'vue-router';
-import { setupLayouts } from 'virtual:generated-layouts';
-import generatedRoutes from '~pages';
-
-const routes = setupLayouts(generatedRoutes);
+import routes from '~pages';
 
 export function createRouter() {
     return _createRouter({
