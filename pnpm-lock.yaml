@@ -36,6 +36,7 @@ specifiers:
   unplugin-vue-components: ^0.17.13
   vite: ^2.7.12
   vite-plugin-pages: ^0.19.9
+  vite-plugin-vue-layouts: ^0.5.0
   vue: ^3.2.27
   vue-router: ^4.0.12
   xicons: ^1.0.0
@@ -81,6 +82,7 @@ devDependencies:
   unplugin-vue-components: 0.17.13_vite@2.7.12+vue@3.2.27
   vite: 2.7.12
   vite-plugin-pages: 0.19.9_vite@2.7.12
+  vite-plugin-vue-layouts: 0.5.0_d32ab7bd715fe4d9089b5c18a29a2f11
 
 packages:
 
@@ -464,7 +466,6 @@ packages:
       magic-string: 0.25.7
       postcss: 8.4.5
       source-map: 0.6.1
-    dev: false
 
   /@vue/compiler-ssr/3.2.27:
     resolution: {integrity: sha512-+l09t319iV7HVSrXfBw9OLwMZIPOFTXmHjZ61Bc5ZcwKqOYAR4uTurKpoXAfcSc5qs/q6WdE9jY3nrP0LUEMQQ==}
@@ -484,7 +485,6 @@ packages:
       '@vue/shared': 3.2.27
       estree-walker: 2.0.2
       magic-string: 0.25.7
-    dev: false
 
   /@vue/reactivity/3.2.27:
     resolution: {integrity: sha512-QPfIQEJidRGIu/mPexhcB4csp1LEg2Nr+/QE72MnXs/OYDtFErhC9FxIyymkxp/xvAgL5wsnSOuDD6zWF42vRQ==}
@@ -3455,6 +3455,23 @@ packages:
       local-pkg: 0.4.1
       vite: 2.7.12
       yaml: 2.0.0-10
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /vite-plugin-vue-layouts/0.5.0_d32ab7bd715fe4d9089b5c18a29a2f11:
+    resolution: {integrity: sha512-KN03GMSGNrWxeHJo5OO9fvdZh44PfievNAoLeMbf20UQPBBO6kpIMVTYB6sFPMWmiTbqZmq3we4z/ocJkxAEiA==}
+    peerDependencies:
+      vite: ^2.5.0
+      vue: ^2.6.12 || ^3.2.4
+      vue-router: ^3.5.1 || ^ 4.0.11
+    dependencies:
+      '@vue/compiler-sfc': 3.2.27
+      debug: 4.3.3
+      fast-glob: 3.2.11
+      vite: 2.7.12
+      vue: 3.2.27
+      vue-router: 4.0.12_vue@3.2.27
     transitivePeerDependencies:
       - supports-color
     dev: true
