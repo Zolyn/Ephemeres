@@ -12,6 +12,10 @@ module.exports = {
         sourceType: 'module',
     },
     plugins: ['vue', '@typescript-eslint'],
+    globals: {
+        // vue macro
+        defineEmits: 'readonly',
+    },
     rules: {
         'no-console': 'off',
         'import/no-extraneous-dependencies': 'off',
