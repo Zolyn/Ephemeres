@@ -1,4 +1,4 @@
-import { createSSRApp } from 'vue';
+import { createSSRApp, createApp as createClientApp } from 'vue';
 import { createHead } from '@vueuse/head';
 import App from './App.vue';
 import { createRouter } from './router';
@@ -7,7 +7,7 @@ import { createRouter } from './router';
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
 // fresh store here.
 export function createApp() {
-    const app = createSSRApp(App);
+    const app = import.meta.env.SSR ? createSSRApp(App) : createClientApp(App);
     const router = createRouter();
     const head = createHead();
     app.use(router);

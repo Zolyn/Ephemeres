@@ -1,5 +1,5 @@
 <template>
-    <div id="page" :theme="osTheme">
+    <div id="page">
         <n-space vertical>
             <n-grid :cols="7">
                 <n-grid-item :span="5" :offset="1">
@@ -7,7 +7,14 @@
                         <template #header>
                             <n-breadcrumb class="breadcrumb-nav">
                                 <n-breadcrumb-item>
-                                    <n-button type="primary" size="small" secondary round>Home</n-button>
+                                    <n-button
+                                        type="primary"
+                                        size="small"
+                                        secondary
+                                        round
+                                        @click="$router.push('/error')"
+                                        >Home</n-button
+                                    >
                                 </n-breadcrumb-item>
                                 <n-breadcrumb-item>
                                     <n-button size="small" secondary round>Test</n-button>
@@ -40,6 +47,8 @@ type CardThemeOverrides = Partial<CardProps['themeOverrides']>;
 
 type ListThemeOverrides = Partial<ListProps['themeOverrides']>;
 
+const route = useRoute();
+
 const osTheme = useOsTheme();
 
 const borderRadius = '16px';
@@ -54,20 +63,19 @@ const listThemeOverrides: ListThemeOverrides = {
     borderRadius,
 };
 
-// const isBreadCombVisible = ref(true);
-// onMounted(() => {
-//     console.log(new Date().getTime());
-//     const container = document.getElementsByClassName('breadcrumb-nav')[0];
-//     const observer = new IntersectionObserver((entries) => {
-//         entries.map((entry) => {
-//             isBreadCombVisible.value = entry.isIntersecting;
-//             console.log(entry.time);
-//         });
-//     });
-//     setTimeout(() => {
-//         observer.observe(container);
-//     }, 2000);
-// });
+const isBreadCombVisible = ref(true);
+onMounted(() => {
+    console.log(route.path);
+    const container = document.getElementsByClassName('breadcrumb-nav')[0];
+    const observer = new IntersectionObserver((entries) => {
+        entries.map((entry) => {
+            isBreadCombVisible.value = entry.isIntersecting;
+            console.log(entry.isIntersecting);
+        });
+    });
+
+    observer.observe(container);
+});
 </script>
 
 <style scoped>

@@ -27,7 +27,11 @@ const template = fs.readFileSync(toAbsolute('./dist/static/index.html'), 'utf-8'
     pageFiles.map((file) => {
         const pageInfo = path.parse(file);
         let route = '';
-        // console.log(pageInfo);
+
+        // Dynamic routing (also requires url rewrites on server side)
+        if (pageInfo.name.startsWith('[') && pageInfo.name.endsWith(']')) {
+            pageInfo.name = 'index';
+        }
 
         if (pageInfo.name === 'index') {
             route = `/${pageInfo.dir}`;
