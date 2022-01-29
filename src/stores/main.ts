@@ -1,14 +1,16 @@
-import { createOptions, Store } from 'pinia-store-decorators';
+import { StoreFragment, transformClass } from 'pinia-class-transformer';
+import { defineStore } from 'pinia';
 
-@Store
-class Main {
-    public msg = 'MainStore!';
+class State {
+    msg = 'A message';
+}
 
-    public say() {
-        console.log(this.msg);
+class Main extends StoreFragment<State, Main> {
+    say(): void {
+        console.log(this.state.msg);
     }
 }
 
-const useStore = defineStore(createOptions('MainStore', Main));
+const useStore = defineStore('main', transformClass({ state: State, fragment: Main }));
 
 export default useStore;

@@ -28,6 +28,7 @@ const template = fs.readFileSync(toAbsolute('./dist/static/index.html'), 'utf-8'
         const pageInfo = path.parse(file);
         let route = '';
 
+        // TODO: Optimize logic or just remove it later
         // Dynamic routing (also requires url rewrites on server side)
         if (pageInfo.name.startsWith('[') && pageInfo.name.endsWith(']')) {
             pageInfo.name = 'index';

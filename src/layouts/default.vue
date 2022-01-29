@@ -1,47 +1,148 @@
 <template>
-    <n-divider>Self 响应式</n-divider>
-    <n-grid cols="4" item-responsive>
-        <n-grid-item span="0 400:1 600:2 800:3">
-            <div class="light-green">
-                0～400px：不显示<br />
-                400～600px：占据空间 1<br />
-                600～800px：占据空间 2<br />
-                800px 以上：占据空间 3
-            </div>
-        </n-grid-item>
-        <n-grid-item>
-            <!-- <div class="green">2</div> -->
-            <router-view></router-view>
-        </n-grid-item>
-    </n-grid>
-    <n-divider>Screen 响应式</n-divider>
-    <n-grid cols="4" item-responsive responsive="screen">
-        <n-grid-item span="0 m:1 l:2">
-            <div class="light-green">
-                m 以下：不显示<br />
-                m 到 l：占据空间 1<br />
-                l 以上：占据空间 2
-            </div>
-        </n-grid-item>
-        <n-grid-item>
-            <div class="green">2</div>
-        </n-grid-item>
-    </n-grid>
+    <div id="layout" :theme="osTheme">
+        <n-config-provider :theme="theme">
+            <n-dialog-provider>
+                <n-space vertical>
+                    <n-layout position="absolute">
+                        <n-layout-header class="nav" bordered>
+                            <n-page-header>
+                                <template #title>
+                                    <n-text>Ephemeres</n-text>
+                                </template>
+                            </n-page-header>
+                        </n-layout-header>
+                        <n-layout position="absolute" style="top: 64px" has-sider>
+                            <n-layout-sider :collapsed-width="0" collapse-mode="transform" show-trigger="bar" bordered>
+                                <n-menu :collapsed-width="0" :options="menuOptions"></n-menu>
+                            </n-layout-sider>
+                            <n-layout-content
+                                :native-scrollbar="false"
+                                class="layout-content"
+                                content-style="min-height: calc(100vh - 63px); display: flex; flex-direction: column; padding: 64px 0;"
+                            >
+                                <router-view />
+                                <n-back-top />
+                            </n-layout-content>
+                        </n-layout>
+                    </n-layout>
+                </n-space>
+            </n-dialog-provider>
+        </n-config-provider>
+        <n-global-style />
+    </div>
 </template>
+<script lang="ts" setup>
+import { darkTheme, useOsTheme } from 'naive-ui';
+
+const osTheme = useOsTheme();
+const theme = computed(() => (osTheme.value === 'dark' ? darkTheme : null));
+
+// const scrollBarLight = {
+//     bg: 'rgb(255, 255, 255)',
+//     bar: 'rgba(0, 0, 0, 0.25)',
+//     barHover: 'rgba(0, 0, 0, 0.4)',
+// };
+//
+// const scrollBarDark = {
+//     bg: 'rgb(24, 24, 28)',
+//     bar: 'rgba(255, 255, 255, 0.2)',
+//     barHover: 'rgba(255, 255, 255, 0.3)',
+// };
+//
+// const scrollBarStyles = computed(() => (osTheme.value === 'light' ? scrollBarLight : scrollBarDark));
+
+const menuOptions = [
+    {
+        label: '且听风吟',
+        key: 'hear-the-wind-sing',
+    },
+    {
+        label: '1973年的弹珠玩具',
+        key: 'pinball-1973',
+        disabled: true,
+        children: [
+            {
+                label: '鼠',
+                key: 'rat',
+            },
+        ],
+    },
+    {
+        label: '寻羊冒险记',
+        key: 'a-wild-sheep-chase',
+        disabled: true,
+    },
+    {
+        label: '舞，舞，舞',
+        key: 'dance-dance-dance',
+        children: [
+            {
+                type: 'group',
+                label: '人物',
+                key: 'people',
+                children: [
+                    {
+                        label: '叙事者',
+                        key: 'narrator',
+                    },
+                    {
+                        label: '羊男',
+                        key: 'sheep-man',
+                    },
+                ],
+            },
+            {
+                label: '饮品',
+                key: 'beverage',
+                children: [
+                    {
+                        label: '威士忌',
+                        key: 'whisky',
+                    },
+                ],
+            },
+            {
+                label: '食物',
+                key: 'food',
+                children: [
+                    {
+                        label: '三明治',
+                        key: 'sandwich',
+                    },
+                ],
+            },
+            {
+                label: '过去增多，未来减少',
+                key: 'the-past-increases-the-future-recedes',
+            },
+        ],
+    },
+];
+</script>
 
 <style>
-.light-green {
-    display: flex;
+.nav {
+    display: grid;
+    grid-template-rows: 63px;
     align-items: center;
-    justify-content: center;
-    height: 200px;
-    background-color: rgba(0, 128, 0, 0.12);
+    padding: 0 16px;
 }
-.green {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    background-color: rgba(0, 128, 0, 0.24);
-}
+
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*    background-color: v-bind(scrollBarStyles.bg);*/
+/*}*/
+
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar-track {*/
+/*    border-radius: 10px;*/
+/*}*/
+
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb {*/
+/*    border-radius: 10px;*/
+/*    background-color: v-bind(scrollBarStyles.bar);*/
+/*}*/
+
+/*.layout-content > .n-layout-scroll-container::-webkit-scrollbar-thumb:hover {*/
+/*    background-color: v-bind(scrollBarStyles.barHover);*/
+/*}*/
 </style>
