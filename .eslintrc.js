@@ -26,5 +26,6 @@ module.exports = {
         'array-callback-return': 'off',
         'no-use-before-define': 'off',
         'no-restricted-syntax': 'off',
+        'max-classes-per-file': 'off',
     },
 };

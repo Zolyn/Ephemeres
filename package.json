@@ -17,7 +17,7 @@
   "dependencies": {
     "naive-ui": "^2.24.7",
     "pinia": "^2.0.10",
-    "pinia-store-decorators": "^1.1.1",
+    "pinia-class-transformer": "^2.0.1",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12",
     "xicons": "^1.0.0"
@@ -36,7 +36,7 @@
     "@vueuse/head": "^0.7.5",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
-    "eslint": "^8.7.0",
+    "eslint": "^8.8.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.4",
@@ -54,7 +54,7 @@
     "unplugin-auto-import": "^0.5.11",
     "unplugin-vue-components": "^0.17.15",
     "vite": "^2.7.13",
-    "vite-plugin-pages": "^0.20.0",
+    "vite-plugin-pages": "^0.20.1",
     "vite-plugin-vue-layouts": "^0.5.0"
   }
 }
