@@ -14,8 +14,6 @@ const manifest = JSON.parse(fs.readFileSync(toAbsolute('./dist/static/ssr-manife
 
 const template = fs.readFileSync(toAbsolute('./dist/static/index.html'), 'utf-8');
 
-// determine routes to pre-render from src/pages
-
 (async () => {
     const render: typeof import('../src/entry-server').render = await import(
         toAbsolute('./dist/server/entry-server.js')
@@ -26,28 +24,27 @@ const template = fs.readFileSync(toAbsolute('./dist/static/index.html'), 'utf-8'
     const routesMap = new Map<string, string>();
     pageFiles.map((file) => {
         const pageInfo = path.parse(file);
-        let route = '';
 
-        // TODO: Optimize logic or just remove it later
+        pageInfo.dir = pageInfo.dir.replace('[', '').replace(']', '');
+
+        let route = `/${pageInfo.dir}`;
+
         // Dynamic routing (also requires url rewrites on server side)
         if (pageInfo.name.startsWith('[') && pageInfo.name.endsWith(']')) {
-            pageInfo.name = 'index';
+            pageInfo.name = `d-${pageInfo.name.slice(1, pageInfo.name.length - 1).replace('...', '')}`;
         }
-
-        if (pageInfo.name === 'index') {
-            route = `/${pageInfo.dir}`;
-        } else {
+        // Static routing
+        else if (pageInfo.name !== 'index') {
             route = path.resolve(`/${pageInfo.dir}/${pageInfo.name}`);
         }
 
         const filePath = path.resolve(`/${pageInfo.dir}/${pageInfo.name}.html`);
 
         if (routesMap.has(route)) {
-            console.error(`[Prerender] ERROR: Duplicate pages:\n${routesMap.get(route)}\n${filePath}`);
-            process.exit(1);
+            console.log(`[Prerender] Info: Skipping duplicate pages:\n${routesMap.get(route)}\n${filePath}\n`);
+        } else {
+            routesMap.set(route, filePath);
         }
-
-        routesMap.set(route, filePath);
     });
     console.log(routesMap);
 
