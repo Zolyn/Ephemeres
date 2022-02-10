@@ -5,34 +5,24 @@
                 <n-grid-item :span="5" :offset="1">
                     <n-card :theme-overrides="cardThemeOverrides" hoverable>
                         <template #header>
-                            <n-breadcrumb class="breadcrumb-nav">
-                                <n-breadcrumb-item>
-                                    <n-button
-                                        type="primary"
-                                        size="small"
-                                        secondary
-                                        round
-                                        @click="$router.push('/error')"
-                                        >Home</n-button
-                                    >
-                                </n-breadcrumb-item>
-                                <n-breadcrumb-item>
-                                    <n-button size="small" secondary round>Test</n-button>
-                                </n-breadcrumb-item>
-                            </n-breadcrumb>
+                            <div id="path-indicator">
+                                <path-indicator />
+                            </div>
                         </template>
-                        <n-list :theme-overrides="listThemeOverrides" bordered>
-                            <n-list-item v-for="i in 20" class="list-item">
-                                <n-thing>
-                                    <template #header>
-                                        <n-text>File</n-text>
-                                    </template>
-                                    <template #description>
-                                        <n-text>1KB / 2077-1-2 8:00</n-text>
-                                    </template>
-                                </n-thing>
-                            </n-list-item>
-                        </n-list>
+                        <slide-x-transition>
+                            <n-list :theme-overrides="listThemeOverrides" bordered>
+                                <n-list-item v-for="i in 20" class="list-item" @click="$router.push(`/${i}`)">
+                                    <n-thing>
+                                        <template #header>
+                                            <n-text>File</n-text>
+                                        </template>
+                                        <template #description>
+                                            <n-text>1KB / 2077-1-2 8:00</n-text>
+                                        </template>
+                                    </n-thing>
+                                </n-list-item>
+                            </n-list>
+                        </slide-x-transition>
                     </n-card>
                 </n-grid-item>
             </n-grid>
@@ -41,19 +31,20 @@
 </template>
 
 <script lang="ts" setup>
-import { CardProps, ListProps, useOsTheme } from 'naive-ui';
+import { CardProps, ListProps } from 'naive-ui';
+import useMainStore from '~/stores/main';
+import PathIndicator from '~/components/PathIndicator.vue';
+import SlideXTransition from '~/components/transitions/SlideXTransition.vue';
 
 type CardThemeOverrides = Partial<CardProps['themeOverrides']>;
 
 type ListThemeOverrides = Partial<ListProps['themeOverrides']>;
 
-const route = useRoute();
-
-const osTheme = useOsTheme();
+const mainStore = useMainStore();
 
 const borderRadius = '16px';
 
-const bgColorHover = computed(() => (osTheme.value === 'light' ? 'rgba(246, 246, 246, 1)' : 'rgba(38, 38, 42, 1)'));
+const bgColorHover = computed(() => (mainStore.theme === 'light' ? 'rgba(246, 246, 246, 1)' : 'rgba(38, 38, 42, 1)'));
 
 const cardThemeOverrides: CardThemeOverrides = {
     borderRadius,
@@ -63,24 +54,28 @@ const listThemeOverrides: ListThemeOverrides = {
     borderRadius,
 };
 
-const isBreadCombVisible = ref(true);
+let observer: IntersectionObserver;
+
 onMounted(() => {
-    console.log(route.path);
-    const container = document.getElementsByClassName('breadcrumb-nav')[0];
-    const observer = new IntersectionObserver((entries) => {
+    const container = document.getElementById('path-indicator')!;
+    observer = new IntersectionObserver((entries) => {
         entries.map((entry) => {
-            isBreadCombVisible.value = entry.isIntersecting;
-            console.log(entry.isIntersecting);
+            mainStore.isBreadCrumbVisible = entry.isIntersecting;
         });
     });
 
     observer.observe(container);
+});
+
+onUnmounted(() => {
+    observer.disconnect();
 });
 </script>
 
 <style scoped>
 #page .list-item {
     transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
 }
 
 #page .list-item:first-child {

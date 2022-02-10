@@ -1,13 +1,38 @@
 <template>
-    <div id="layout" :theme="osTheme">
+    <div id="layout">
         <n-config-provider :theme="theme">
             <n-dialog-provider>
                 <n-space vertical>
                     <n-layout position="absolute">
-                        <n-layout-header class="nav" bordered>
+                        <n-layout-header id="nav" bordered>
                             <n-page-header>
                                 <template #title>
-                                    <n-text>Ephemeres</n-text>
+                                    <n-button :theme-overrides="buttonThemeOverrides" text @click="goToHome"
+                                        >Ephemeres</n-button
+                                    >
+                                    <n-divider id="nav-divider" vertical />
+                                </template>
+                                <template #subtitle>
+                                    <slide-y-transition :enter-duration="0.5" reverse>
+                                        <path-indicator v-show="!mainStore.isBreadCrumbVisible" />
+                                    </slide-y-transition>
+                                </template>
+                                <template #extra>
+                                    <div id="nav-end">
+                                        <slide-y-transition :enter-duration="0.5" reverse>
+                                            <n-button v-show="!mainStore.isBreadCrumbVisible" quaternary circle>
+                                                <template #icon>
+                                                    <n-icon :component="Edit16Filled" />
+                                                </template>
+                                            </n-button>
+                                        </slide-y-transition>
+                                        <n-divider vertical />
+                                        <n-button quaternary circle @click="changeTheme">
+                                            <template #icon>
+                                                <n-icon :component="themeIcon" />
+                                            </template>
+                                        </n-button>
+                                    </div>
                                 </template>
                             </n-page-header>
                         </n-layout-header>
@@ -16,11 +41,16 @@
                                 <n-menu :collapsed-width="0" :options="menuOptions"></n-menu>
                             </n-layout-sider>
                             <n-layout-content
+                                ref="contentComponent"
                                 :native-scrollbar="false"
                                 class="layout-content"
                                 content-style="min-height: calc(100vh - 63px); display: flex; flex-direction: column; padding: 64px 0;"
                             >
-                                <router-view />
+                                <router-view v-slot="{ Component, route }">
+                                    <slide-x-transition :enter-duration="0.5">
+                                        <component :is="Component" :key="route" />
+                                    </slide-x-transition>
+                                </router-view>
                                 <n-back-top />
                             </n-layout-content>
                         </n-layout>
@@ -32,11 +62,30 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { darkTheme, useOsTheme } from 'naive-ui';
+import { darkTheme, useOsTheme, ButtonProps } from 'naive-ui';
+import { Moon, Sunny } from '@vicons/ionicons5';
+import { Edit16Filled } from '@vicons/fluent';
+import useMainStore from '~/stores/main';
+import PathIndicator from '~/components/PathIndicator.vue';
+import emitter from '~/eventbus';
 
-const osTheme = useOsTheme();
-const theme = computed(() => (osTheme.value === 'dark' ? darkTheme : null));
+type ButtonThemeOverrides = Partial<ButtonProps['themeOverrides']>;
 
+interface ContentComponent {
+    // eslint-disable-next-line no-unused-vars
+    scrollTo: ((options: ScrollToOptions) => void) & ((x: number, y: number) => void);
+}
+
+const buttonThemeOverrides: ButtonThemeOverrides = {
+    fontSizeMedium: '18px',
+};
+
+const mainStore = useMainStore();
+const router = useRouter();
+
+const theme = computed(() => (mainStore.theme === 'dark' ? darkTheme : null));
+const themeIcon = computed(() => (mainStore.theme === 'dark' ? Moon : Sunny));
+const contentComponent = ref<ContentComponent | null>(null);
 // const scrollBarLight = {
 //     bg: 'rgb(255, 255, 255)',
 //     bar: 'rgba(0, 0, 0, 0.25)',
@@ -118,14 +167,38 @@ const menuOptions = [
         ],
     },
 ];
+
+function goToHome() {
+    router.push('/');
+}
+
+function changeTheme() {
+    mainStore.theme = mainStore.theme === 'dark' ? 'light' : 'dark';
+}
+
+emitter.on('scroll', (e) => {
+    contentComponent.value!.scrollTo(e);
+});
+
+onMounted(() => {
+    mainStore.theme = useOsTheme().value as string;
+});
 </script>
 
 <style>
-.nav {
+#nav {
     display: grid;
     grid-template-rows: 63px;
     align-items: center;
-    padding: 0 16px;
+    padding: 0 16px 0 20px;
+}
+
+#nav-divider {
+    margin-left: 60px;
+}
+
+#nav-end {
+    margin-right: 10px;
 }
 
 /*.layout-content > .n-layout-scroll-container::-webkit-scrollbar {*/
