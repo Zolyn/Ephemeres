@@ -13,8 +13,10 @@ module.exports = {
     },
     plugins: ['vue', '@typescript-eslint'],
     globals: {
-        // vue macro
+        ScrollToOptions: 'readonly',
+        // vue macros
         defineEmits: 'readonly',
+        defineProps: 'readonly',
     },
     rules: {
         'no-console': 'off',

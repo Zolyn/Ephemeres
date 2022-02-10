@@ -12,7 +12,9 @@ import AutoImportsRulesPlugin from './src/plugins/auto-imports-rules';
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        vue(),
+        vue({
+            reactivityTransform: true,
+        }),
         Pages({
             routeBlockLang: 'yaml',
         }),
@@ -30,7 +32,7 @@ export default defineConfig({
         // DebugPlugin(),
     ],
     optimizeDeps: {
-        include: ['naive-ui'],
+        include: ['naive-ui', 'pinia'],
     },
     resolve: {
         alias: {
