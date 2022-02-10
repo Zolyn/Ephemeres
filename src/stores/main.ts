@@ -2,15 +2,13 @@ import { StoreFragment, transformClass } from 'pinia-class-transformer';
 import { defineStore } from 'pinia';
 
 class State {
-    msg = 'A message';
+    theme = 'light';
+
+    isBreadCrumbVisible = true;
 }
 
-class Main extends StoreFragment<State, Main> {
-    say(): void {
-        console.log(this.state.msg);
-    }
-}
+class Main extends StoreFragment<State, Main> {}
 
-const useStore = defineStore('main', transformClass({ state: State, fragment: Main }));
+const useMainStore = defineStore('main', () => transformClass({ state: State, fragment: Main }));
 
-export default useStore;
+export default useMainStore;

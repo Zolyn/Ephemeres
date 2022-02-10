@@ -10,6 +10,8 @@ export function createApp() {
     const app = import.meta.env.SSR ? createSSRApp(App) : createClientApp(App);
     const router = createRouter();
     const head = createHead();
+    const pinia = createPinia();
     app.use(router);
+    app.use(pinia);
     return { app, router, head };
 }
