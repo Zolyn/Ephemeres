@@ -11,7 +11,7 @@ app.use(compression());
 app.use(serveStatic(resolve('./dist/static'), { index: false }));
 app.use('*', (_, res) => {
     console.log(_.params);
-    res.sendFile(resolve('./dist/static/index.html'));
+    res.sendFile(resolve('./dist/static/d-all.html'));
 });
 
 app.listen(3000, () => {

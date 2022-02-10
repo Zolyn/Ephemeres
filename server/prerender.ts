@@ -8,13 +8,13 @@ import P from '@antfu/p';
 import fg from 'fast-glob';
 import { minify } from 'html-minifier';
 
-const toAbsolute = (p: string) => path.resolve(__dirname, '../', p);
+async function prerender() {
+    const toAbsolute = (p: string) => path.resolve(__dirname, '../', p);
 
-const manifest = JSON.parse(fs.readFileSync(toAbsolute('./dist/static/ssr-manifest.json'), 'utf-8'));
+    const manifest = JSON.parse(fs.readFileSync(toAbsolute('./dist/static/ssr-manifest.json'), 'utf-8'));
 
-const template = fs.readFileSync(toAbsolute('./dist/static/index.html'), 'utf-8');
+    const template = fs.readFileSync(toAbsolute('./dist/static/index.html'), 'utf-8');
 
-(async () => {
     const render: typeof import('../src/entry-server').render = await import(
         toAbsolute('./dist/server/entry-server.js')
     ).then((serverEntry) => serverEntry.render);
@@ -81,4 +81,8 @@ const template = fs.readFileSync(toAbsolute('./dist/static/index.html'), 'utf-8'
 
     // done, delete ssr manifest
     fs.unlinkSync(toAbsolute('dist/static/ssr-manifest.json'));
-})();
+}
+
+prerender().catch((err) => console.error(err));
+
+export default prerender();

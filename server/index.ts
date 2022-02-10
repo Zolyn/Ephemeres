@@ -95,11 +95,13 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
 }
 
 if (!isTest) {
-    createServer().then(({ app }) =>
-        app.listen(3000, () => {
-            console.log('Server listening on http://localhost:3000');
-        }),
-    );
+    createServer()
+        .then(({ app }) =>
+            app.listen(3000, () => {
+                console.log('Server listening on http://localhost:3000');
+            }),
+        )
+        .catch((err) => console.error(err));
 }
 
 // for test use
