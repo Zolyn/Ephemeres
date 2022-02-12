@@ -12,6 +12,8 @@ export function createApp() {
     const head = createHead();
     const pinia = createPinia();
     app.use(router);
+    // TODO: I don't know whether it is necessary to hydrate the state manually
+    //  even though this project doesn't require data prefetching :(
     app.use(pinia);
     return { app, router, head };
 }

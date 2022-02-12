@@ -1,5 +1,5 @@
 // https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/router.js
-import { createMemoryHistory, createRouter as _createRouter, createWebHistory } from 'vue-router';
+import { createMemoryHistory, createRouter as _createRouter, createWebHistory, START_LOCATION } from 'vue-router';
 import { setupLayouts } from 'layouts-generated';
 import pageRoutes from '~pages';
 import emitter from '~/eventbus';
@@ -12,13 +12,25 @@ export function createRouter() {
         // import.meta.env.SSR is injected by Vite.
         history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
         routes,
-        scrollBehavior() {
-            // TODO: implement savedPosition to replace the same functionality of Vue Router
+        // Manually implement scrollBehavior for Naive UI
+        scrollBehavior(to, from, savedPosition) {
             return new Promise((resolve) => {
                 setTimeout(() => {
-                    emitter.emit('scroll', { top: 0, behavior: 'smooth' });
+                    console.log(`to: ${to.path}, from: ${from.path}`);
+
+                    // eslint-disable-next-line no-restricted-globals
+                    const { position, forward } = history.state;
+
+                    if (savedPosition) {
+                        console.log('Save & Restore');
+                        emitter.emit('saveAndRestorePosition', { to, from, position, forward });
+                    } else {
+                        console.log('Save');
+                        emitter.emit('savePosition', { to, from, position, forward });
+                    }
+
                     resolve();
-                }, 700);
+                }, 1000);
             });
         },
     });

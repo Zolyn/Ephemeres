@@ -20,11 +20,7 @@
                                 <template #extra>
                                     <div id="nav-end">
                                         <slide-y-transition :enter-duration="0.5" reverse>
-                                            <n-button v-show="!mainStore.isBreadCrumbVisible" quaternary circle>
-                                                <template #icon>
-                                                    <n-icon :component="Edit16Filled" />
-                                                </template>
-                                            </n-button>
+                                            <path-edit v-show="!mainStore.isBreadCrumbVisible" />
                                         </slide-y-transition>
                                         <n-divider vertical />
                                         <n-button quaternary circle @click="changeTheme">
@@ -64,17 +60,22 @@
 <script lang="ts" setup>
 import { darkTheme, useOsTheme, ButtonProps } from 'naive-ui';
 import { Moon, Sunny } from '@vicons/ionicons5';
-import { Edit16Filled } from '@vicons/fluent';
+import { START_LOCATION } from 'vue-router';
+import { useEventListener } from '@vueuse/core';
 import useMainStore from '~/stores/main';
-import PathIndicator from '~/components/PathIndicator.vue';
 import emitter from '~/eventbus';
-
-type ButtonThemeOverrides = Partial<ButtonProps['themeOverrides']>;
 
 interface ContentComponent {
     // eslint-disable-next-line no-unused-vars
     scrollTo: ((options: ScrollToOptions) => void) & ((x: number, y: number) => void);
+    $refs: {
+        scrollbarInstRef: {
+            containerScrollTop: number;
+        };
+    };
 }
+
+type ButtonThemeOverrides = Partial<ButtonProps['themeOverrides']>;
 
 const buttonThemeOverrides: ButtonThemeOverrides = {
     fontSizeMedium: '18px',
@@ -176,12 +177,68 @@ function changeTheme() {
     mainStore.theme = mainStore.theme === 'dark' ? 'light' : 'dark';
 }
 
-emitter.on('scroll', (e) => {
-    contentComponent.value!.scrollTo(e);
+function scroll(options: ScrollToOptions): void {
+    contentComponent.value!.scrollTo(options);
+}
+
+function savePositionFn(key: string): void {
+    mainStore.savedPositionMap.set(key, {
+        top: contentComponent.value!.$refs.scrollbarInstRef.containerScrollTop,
+        behavior: 'smooth',
+    });
+}
+
+emitter.on('savePosition', ({ from, position }) => {
+    if (from !== START_LOCATION) {
+        savePositionFn(`${position - 1}:${from.path}`);
+        scroll({ top: 0, behavior: 'smooth' });
+    } else {
+        savePositionFn(`${position}:${from.path}`);
+    }
+});
+
+emitter.on('saveAndRestorePosition', ({ to, from, position, forward }) => {
+    // Determine which button the user press (Back or Forward)
+    const offset = forward === from.path ? 1 : -1;
+    const key = `${position}:${to.path}`;
+
+    if (from !== START_LOCATION) {
+        savePositionFn(`${position + offset}:${from.path}`);
+        scroll(mainStore.savedPositionMap.get(key)!);
+        mainStore.savedPositionMap.delete(key);
+    }
+    // page refresh
+    else {
+        scroll(mainStore.savedPositionMap.get(key)!);
+        mainStore.savedPositionMap.delete(key);
+    }
 });
 
 onMounted(() => {
     mainStore.theme = useOsTheme().value as string;
+
+    const savedPosMapFromStorage = sessionStorage.getItem('saved-pos-map');
+
+    if (savedPosMapFromStorage) {
+        const parsedMap = JSON.parse(savedPosMapFromStorage);
+
+        if (Array.isArray(parsedMap)) {
+            mainStore.savedPositionMap = new Map(parsedMap);
+        }
+    }
+
+    // Persist savedPositionMap
+    mainStore.$subscribe((_, state) => {
+        sessionStorage.setItem('saved-pos-map', JSON.stringify([...state.savedPositionMap]));
+    });
+
+    // Save position when page refreshed
+    useEventListener(window, 'beforeunload', () => {
+        // eslint-disable-next-line no-restricted-globals
+        const { position } = history.state;
+        const { path } = router.currentRoute.value;
+        savePositionFn(`${position}:${path}`);
+    });
 });
 </script>
 

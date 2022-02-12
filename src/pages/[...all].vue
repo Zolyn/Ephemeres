@@ -5,9 +5,12 @@
                 <n-grid-item :span="5" :offset="1">
                     <n-card :theme-overrides="cardThemeOverrides" hoverable>
                         <template #header>
-                            <div id="path-indicator">
+                            <div ref="pathIndicatorComponent">
                                 <path-indicator />
                             </div>
+                        </template>
+                        <template #header-extra>
+                            <path-edit />
                         </template>
                         <slide-x-transition>
                             <n-list :theme-overrides="listThemeOverrides" bordered>
@@ -32,6 +35,7 @@
 
 <script lang="ts" setup>
 import { CardProps, ListProps } from 'naive-ui';
+import { useIntersectionObserver } from '@vueuse/core';
 import useMainStore from '~/stores/main';
 import PathIndicator from '~/components/PathIndicator.vue';
 import SlideXTransition from '~/components/transitions/SlideXTransition.vue';
@@ -54,21 +58,10 @@ const listThemeOverrides: ListThemeOverrides = {
     borderRadius,
 };
 
-let observer: IntersectionObserver;
+const pathIndicatorComponent = ref<HTMLElement | null>(null);
 
-onMounted(() => {
-    const container = document.getElementById('path-indicator')!;
-    observer = new IntersectionObserver((entries) => {
-        entries.map((entry) => {
-            mainStore.isBreadCrumbVisible = entry.isIntersecting;
-        });
-    });
-
-    observer.observe(container);
-});
-
-onUnmounted(() => {
-    observer.disconnect();
+useIntersectionObserver(pathIndicatorComponent, ([{ isIntersecting }]) => {
+    mainStore.isBreadCrumbVisible = isIntersecting;
 });
 </script>
 

@@ -5,6 +5,8 @@ class State {
     theme = 'light';
 
     isBreadCrumbVisible = true;
+
+    savedPositionMap = new Map<string, ScrollToOptions>();
 }
 
 class Main extends StoreFragment<State, Main> {}
