@@ -28,6 +28,7 @@ declare module 'vue' {
     NSpace: typeof import('naive-ui')['NSpace']
     NText: typeof import('naive-ui')['NText']
     NThing: typeof import('naive-ui')['NThing']
+    PathEdit: typeof import('./src/components/PathEdit.vue')['default']
     PathIndicator: typeof import('./src/components/PathIndicator.vue')['default']
     SlideXTransition: typeof import('./src/components/transitions/SlideXTransition.vue')['default']
     SlideYTransition: typeof import('./src/components/transitions/SlideYTransition.vue')['default']
