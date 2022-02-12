@@ -63,18 +63,19 @@ async function prerender() {
 
         fs.writeFileSync(
             toAbsolute(filePath),
-            minify(html, {
-                collapseBooleanAttributes: true,
-                removeAttributeQuotes: true,
-                removeEmptyAttributes: true,
-                removeRedundantAttributes: true,
-                collapseWhitespace: true,
-                minifyCSS: true,
-                minifyJS: true,
-                sortAttributes: true,
-                sortClassName: true,
-                useShortDoctype: true,
-            }),
+            html,
+            // minify(html, {
+            //     collapseBooleanAttributes: true,
+            //     removeAttributeQuotes: true,
+            //     removeEmptyAttributes: true,
+            //     removeRedundantAttributes: true,
+            //     collapseWhitespace: true,
+            //     minifyCSS: true,
+            //     minifyJS: true,
+            //     sortAttributes: true,
+            //     sortClassName: true,
+            //     useShortDoctype: true,
+            // }),
         );
         console.log('pre-rendered:', filePath);
     });
@@ -85,4 +86,4 @@ async function prerender() {
 
 prerender().catch((err) => console.error(err));
 
-export default prerender();
+export default prerender;
