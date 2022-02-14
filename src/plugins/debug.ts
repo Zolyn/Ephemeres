@@ -1,3 +1,4 @@
+// Just for test use
 import { Plugin } from 'vite';
 import { resolve } from 'path';
 import { appendFileSync, unlinkSync, existsSync } from 'fs';

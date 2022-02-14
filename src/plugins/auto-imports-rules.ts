@@ -1,3 +1,4 @@
+// Deprecated since unplugin-auto-import implemented same functionality
 import { Plugin } from 'vite';
 import { format } from 'prettier';
 import { resolve } from 'path';

@@ -37,8 +37,6 @@
 import { CardProps, ListProps } from 'naive-ui';
 import { useIntersectionObserver } from '@vueuse/core';
 import useMainStore from '~/stores/main';
-import PathIndicator from '~/components/PathIndicator.vue';
-import SlideXTransition from '~/components/transitions/SlideXTransition.vue';
 
 type CardThemeOverrides = Partial<CardProps['themeOverrides']>;
 
