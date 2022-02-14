@@ -6,7 +6,6 @@ import Layout from 'vite-plugin-vue-layouts';
 import Component from 'unplugin-vue-components/vite';
 import { resolve } from 'path';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
-import AutoImportsRulesPlugin from './src/plugins/auto-imports-rules';
 // import DebugPlugin from './src/plugins/debug';
 
 // https://vitejs.dev/config/
@@ -23,12 +22,15 @@ export default defineConfig({
             dts: true,
             include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/],
             imports: ['vue', 'vue-router', 'pinia'],
+            eslintrc: {
+                enabled: true,
+                globalsPropValue: 'readonly',
+            },
         }),
         Component({
             dts: true,
             resolvers: [NaiveUiResolver()],
         }),
-        AutoImportsRulesPlugin(),
         // DebugPlugin(),
     ],
     optimizeDeps: {
