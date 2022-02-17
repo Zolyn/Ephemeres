@@ -12,19 +12,8 @@
                         <template #header-extra>
                             <path-edit />
                         </template>
-                        <slide-x-transition>
-                            <n-list :theme-overrides="listThemeOverrides" bordered>
-                                <n-list-item v-for="i in 20" class="list-item" @click="$router.push(`/${i}`)">
-                                    <n-thing>
-                                        <template #header>
-                                            <n-text>File</n-text>
-                                        </template>
-                                        <template #description>
-                                            <n-text>1KB / 2077-1-2 8:00</n-text>
-                                        </template>
-                                    </n-thing>
-                                </n-list-item>
-                            </n-list>
+                        <slide-x-transition :enter-duration="0.5">
+                            <component :is="loading ? ListSkeleton : ListLoaded" />
                         </slide-x-transition>
                     </n-card>
                 </n-grid-item>
@@ -34,50 +23,26 @@
 </template>
 
 <script lang="ts" setup>
-import { CardProps, ListProps } from 'naive-ui';
 import { useIntersectionObserver } from '@vueuse/core';
 import useMainStore from '~/stores/main';
-
-type CardThemeOverrides = Partial<CardProps['themeOverrides']>;
-
-type ListThemeOverrides = Partial<ListProps['themeOverrides']>;
+import { cardThemeOverrides } from '~/utils';
+import ListSkeleton from '~/components/ListSkeleton.vue';
+import ListLoaded from '~/components/ListLoaded.vue';
 
 const mainStore = useMainStore();
 
-const borderRadius = '16px';
-
-const bgColorHover = computed(() => (mainStore.theme === 'light' ? 'rgba(246, 246, 246, 1)' : 'rgba(38, 38, 42, 1)'));
-
-const cardThemeOverrides: CardThemeOverrides = {
-    borderRadius,
-};
-
-const listThemeOverrides: ListThemeOverrides = {
-    borderRadius,
-};
-
 const pathIndicatorComponent = ref<HTMLElement | null>(null);
+const loading = ref(true);
 
 useIntersectionObserver(pathIndicatorComponent, ([{ isIntersecting }]) => {
     mainStore.isBreadCrumbVisible = isIntersecting;
 });
+
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false;
+    }, 3000);
+});
 </script>
 
-<style scoped>
-#page .list-item {
-    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-}
-
-#page .list-item:first-child {
-    border-radius: v-bind(borderRadius) v-bind(borderRadius) 0 0;
-}
-
-#page .list-item:last-child {
-    border-radius: 0 0 v-bind(borderRadius) v-bind(borderRadius);
-}
-
-#page .list-item:hover {
-    background-color: v-bind(bgColorHover);
-}
-</style>
+<style scoped></style>

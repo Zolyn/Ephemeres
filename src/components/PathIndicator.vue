@@ -1,16 +1,18 @@
 <template>
-    <n-breadcrumb>
-        <n-breadcrumb-item v-for="item in breadcrumbs" :key="item.id">
-            <n-button
-                :type="item.disabled ? 'default' : 'primary'"
-                :disabled="item.disabled"
-                size="small"
-                secondary
-                round
-                >{{ item.text }}</n-button
-            >
-        </n-breadcrumb-item>
-    </n-breadcrumb>
+    <div class="path-indicator">
+        <n-breadcrumb>
+            <n-breadcrumb-item v-for="item in breadcrumbs" :key="item.id">
+                <n-button
+                    :type="item.disabled ? 'default' : 'primary'"
+                    :disabled="item.disabled"
+                    size="small"
+                    secondary
+                    round
+                    >{{ item.text }}</n-button
+                >
+            </n-breadcrumb-item>
+        </n-breadcrumb>
+    </div>
 </template>
 
 <script lang="ts" setup>

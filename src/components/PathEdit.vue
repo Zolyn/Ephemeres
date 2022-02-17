@@ -1,5 +1,5 @@
 <template>
-    <n-space :theme-overrides="spaceThemeOverrides" class="path-edit" inline>
+    <div class="path-edit">
         <n-button quaternary circle @click="showModal = true">
             <template #icon>
                 <n-icon :component="Edit16Filled" />
@@ -18,18 +18,11 @@
                 <div>操作</div>
             </template>
         </n-modal>
-    </n-space>
+    </div>
 </template>
 
 <script lang="ts" setup>
-import { SpaceProps } from 'naive-ui';
 import { Edit16Filled } from '@vicons/fluent';
-
-type SpaceThemeOverrides = Partial<SpaceProps['themeOverrides']>;
-
-const spaceThemeOverrides: SpaceThemeOverrides = {
-    gapMedium: '0px 0px',
-};
 
 const formValue = ref({
     path: '',
@@ -38,4 +31,8 @@ const formValue = ref({
 const showModal = ref(false);
 </script>
 
-<style scoped></style>
+<style scoped>
+.path-edit {
+    display: inline-block;
+}
+</style>

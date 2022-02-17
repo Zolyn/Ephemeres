@@ -18,17 +18,15 @@
                                     </slide-y-transition>
                                 </template>
                                 <template #extra>
-                                    <div id="nav-end">
-                                        <slide-y-transition :enter-duration="0.5" reverse>
-                                            <path-edit v-show="!mainStore.isBreadCrumbVisible" />
-                                        </slide-y-transition>
-                                        <n-divider vertical />
-                                        <n-button quaternary circle @click="changeTheme">
-                                            <template #icon>
-                                                <n-icon :component="themeIcon" />
-                                            </template>
-                                        </n-button>
-                                    </div>
+                                    <slide-y-transition :enter-duration="0.5" reverse>
+                                        <path-edit v-show="!mainStore.isBreadCrumbVisible" />
+                                    </slide-y-transition>
+                                    <n-divider vertical />
+                                    <n-button quaternary circle @click="changeTheme">
+                                        <template #icon>
+                                            <n-icon :component="themeIcon" />
+                                        </template>
+                                    </n-button>
                                 </template>
                             </n-page-header>
                         </n-layout-header>
