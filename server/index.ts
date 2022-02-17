@@ -2,6 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import express from 'express';
+import https from 'https';
 import { ViteDevServer } from 'vite';
 
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD;
@@ -19,6 +20,7 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
     const app = express();
 
     let vite: ViteDevServer;
+    let httpsServer: https.Server;
     if (!isProd) {
         vite = await import('vite').then((viteModule) =>
             viteModule.createServer({
@@ -35,6 +37,7 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
                 },
             }),
         );
+        httpsServer = https.createServer(vite.config.server.https as https.ServerOptions, app);
         // use vite's connect instance as middleware
         app.use(vite.middlewares);
     } else {
@@ -80,8 +83,7 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
 
             res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
         } catch (e) {
-            // if (!isProd)
-            if (vite) {
+            if (!isProd) {
                 vite.ssrFixStacktrace(e as Error);
             }
 
@@ -91,16 +93,22 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
     });
 
     // @ts-ignore
-    return { app, vite };
+    return { app, vite, httpsServer, isProd };
 }
 
 if (!isTest) {
     createServer()
-        .then(({ app }) =>
-            app.listen(3000, () => {
-                console.log('Server listening on http://localhost:3000');
-            }),
-        )
+        .then(({ app, httpsServer, isProd }) => {
+            if (!isProd) {
+                httpsServer.listen(3000, () => {
+                    console.log('Express HTTPS server listening on https://localhost:3000');
+                });
+            } else {
+                app.listen(3000, () => {
+                    console.log('Express HTTP server listening on http://localhost:3000');
+                });
+            }
+        })
         .catch((err) => console.error(err));
 }
 
