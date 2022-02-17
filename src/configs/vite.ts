@@ -9,7 +9,7 @@ import MKCert from 'vite-plugin-mkcert';
 import { resolve } from 'path';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import Visualizer from 'rollup-plugin-visualizer';
-import ManualChunksCompletion from '../plugins/manualChunkCompletion';
+import ManualChunksCompletion from '../plugins/manualChunksCompletion';
 import { dependencies } from '../../package.json';
 import { deepMerge } from '../utils';
 import { isClient, isReport, isStatic } from '../constants';
