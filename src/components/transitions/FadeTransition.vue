@@ -1,31 +1,22 @@
 <template>
-    <transition name="fade" mode="out-in" @before-enter="beforeEnter">
+    <base-transition name="fade" :mode="mode" :appear="appear">
         <slot />
-    </transition>
+    </base-transition>
 </template>
 
 <script lang="ts" setup>
-interface TransitionProps {
-    enterDuration?: number;
-    leaveDuration?: number;
-}
+import type { CommonTransitionProps } from '~/types';
 
-// eslint-disable-next-line vue/no-setup-props-destructure
-const { enterDuration = 0.3, leaveDuration = 0.3 } = defineProps<TransitionProps>();
-
-function beforeEnter(el: HTMLElement) {
-    // eslint-disable-next-line no-param-reassign
-    el.style.transformOrigin = 'top center 0';
-}
+const { enterDuration = 0.3, leaveDuration = 0.3, mode, appear } = defineProps<CommonTransitionProps>();
 </script>
 
 <style scoped>
 .fade-enter-active {
-    transition: v-bind(enterDuration + 's') cubic-bezier(0.25, 0.8, 0.5, 1);
+    transition: opacity v-bind(enterDuration + 's') ease-in-out;
 }
 
 .fade-leave-active {
-    transition: v-bind(leaveDuration + 's') cubic-bezier(0.25, 0.8, 0.5, 1);
+    transition: opacity v-bind(leaveDuration + 's') ease-in-out;
 }
 
 .fade-enter-from,

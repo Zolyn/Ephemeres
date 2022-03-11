@@ -1,39 +1,36 @@
 <template>
-    <transition name="slide-x" mode="out-in" @before-enter="beforeEnter">
+    <base-transition name="slide-x" :mode="mode" :appear="appear">
         <slot />
-    </transition>
+    </base-transition>
 </template>
 
 <script lang="ts" setup>
-interface TransitionProps {
-    enterDuration?: number;
-    leaveDuration?: number;
-    reverse?: boolean;
-}
+import type { SlideTransitionProps } from '~/types';
 
-// eslint-disable-next-line vue/no-setup-props-destructure
-const { reverse = false, enterDuration = 0.3, leaveDuration = 0.3 } = defineProps<TransitionProps>();
+const {
+    mode,
+    appear,
+    offset = 16,
+    reverse = false,
+    enterDuration = 0.3,
+    leaveDuration = 0.3,
+} = defineProps<SlideTransitionProps>();
 
-const xPos = computed(() => (reverse ? '16px' : '-16px'));
-
-function beforeEnter(el: HTMLElement) {
-    // eslint-disable-next-line no-param-reassign
-    el.style.transformOrigin = 'top center 0';
-}
+const xOffset = computed(() => (reverse ? -offset : offset));
 </script>
 
 <style scoped>
 .slide-x-enter-active {
-    transition: v-bind(enterDuration + 's') cubic-bezier(0.25, 0.8, 0.5, 1);
+    transition: v-bind(enterDuration + 's');
 }
 
 .slide-x-leave-active {
-    transition: v-bind(leaveDuration + 's') cubic-bezier(0.25, 0.8, 0.5, 1);
+    transition: v-bind(leaveDuration + 's');
 }
 
 .slide-x-enter-from,
 .slide-x-leave-to {
     opacity: 0;
-    transform: translateX(v-bind(xPos));
+    transform: translateX(v-bind(xOffset + 'px'));
 }
 </style>
