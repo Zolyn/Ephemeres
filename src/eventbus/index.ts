@@ -16,3 +16,4 @@ type Events = {
 const emitter = mitt<Events>();
 
 export default emitter;
+export type { RouteInfo };

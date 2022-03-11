@@ -2,7 +2,9 @@
 import { createMemoryHistory, createRouter as _createRouter, createWebHistory, START_LOCATION } from 'vue-router';
 import { setupLayouts } from 'layouts-generated';
 import pageRoutes from '~pages';
-import emitter from '~/eventbus';
+import emitter, { RouteInfo } from '~/eventbus';
+import { decodeRouteLocation } from '~/utils';
+import { useIsMobile } from '~/utils/composables';
 
 const routes = setupLayouts(pageRoutes);
 
@@ -21,12 +23,16 @@ export function createRouter() {
                     // eslint-disable-next-line no-restricted-globals
                     const { position, forward } = history.state;
 
+                    const decodedTo = decodeRouteLocation(to);
+                    const decodedFrom = decodeRouteLocation(from);
+                    const eventProps: RouteInfo = { to: decodedTo, from: decodedFrom, position, forward };
+
                     if (savedPosition) {
                         console.log('Save & Restore');
-                        emitter.emit('saveAndRestorePosition', { to, from, position, forward });
+                        emitter.emit('saveAndRestorePosition', eventProps);
                     } else {
                         console.log('Save');
-                        emitter.emit('savePosition', { to, from, position, forward });
+                        emitter.emit('savePosition', eventProps);
                     }
 
                     resolve();
