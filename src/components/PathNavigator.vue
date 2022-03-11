@@ -1,7 +1,7 @@
 <template>
     <div class="path-indicator">
         <n-breadcrumb>
-            <n-breadcrumb-item v-for="item in breadcrumbs" :key="item.id">
+            <n-breadcrumb-item v-for="item in breadcrumbs" :key="item.id" @click="router.push(item.path)">
                 <n-button
                     :type="item.disabled ? 'default' : 'primary'"
                     :disabled="item.disabled"
@@ -28,11 +28,11 @@ const breadcrumbs = computed<BreadCrumbList>(() => {
             id: nanoid(),
             text: 'Home',
             disabled: false,
-            href: '/',
+            path: '/',
         },
     ];
 
-    const pathClip = path.split('/');
+    const pathClip = decodeURIComponent(path).split('/');
     // Remove empty value
     pathClip.shift();
 
@@ -45,7 +45,7 @@ const breadcrumbs = computed<BreadCrumbList>(() => {
                 id: nanoid(),
                 text: val,
                 disabled: false,
-                href: mergedVal,
+                path: mergedVal,
             });
 
             return mergedVal;
