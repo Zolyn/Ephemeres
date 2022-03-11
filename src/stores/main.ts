@@ -1,16 +1,16 @@
-import { StoreFragment, transformClass } from 'pinia-class-transformer';
+import { transformClass } from 'pinia-class-transformer';
 import { defineStore } from 'pinia';
 
-class State {
+class Main {
     theme = 'light';
+
+    isLoading = true;
 
     isBreadCrumbVisible = true;
 
     savedPositionMap = new Map<string, ScrollToOptions>();
 }
 
-class Main extends StoreFragment<State, Main> {}
-
-const useMainStore = defineStore('main', () => transformClass({ state: State, fragment: Main }));
+const useMainStore = defineStore('main', transformClass(Main));
 
 export default useMainStore;
