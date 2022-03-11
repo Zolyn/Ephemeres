@@ -1,9 +1,16 @@
 import { UserConfig } from 'vite';
 import Vue from '@vitejs/plugin-vue';
+// https://github.com/vuejs/core/issues/4294
+import VueTypeImports from '@zolyn/vite-plugin-vue-type-imports';
 import AutoImport from 'unplugin-auto-import/vite';
 import Pages from 'vite-plugin-pages';
 import Layout from 'vite-plugin-vue-layouts';
 import Component from 'unplugin-vue-components/vite';
+import UnoCSS from 'unocss/vite';
+import PresetWind from '@unocss/preset-wind';
+import PresetAttributify from '@unocss/preset-attributify';
+import TransformerDirectives from '@unocss/transformer-directives';
+import TransformerVariantGroup from '@unocss/transformer-variant-group';
 import Inspect from 'vite-plugin-inspect';
 import MKCert from 'vite-plugin-mkcert';
 import { resolve } from 'path';
@@ -18,6 +25,14 @@ const commonConfig: UserConfig = {
     plugins: [
         Vue({
             reactivityTransform: true,
+        }),
+        VueTypeImports(),
+        UnoCSS({
+            shortcuts: {
+                'flex-c': 'flex items-center',
+            },
+            transformers: [TransformerDirectives(), TransformerVariantGroup()],
+            presets: [PresetWind(), PresetAttributify()],
         }),
         Pages({
             routeBlockLang: 'yaml',
@@ -56,6 +71,9 @@ const commonConfig: UserConfig = {
     },
     build: {
         reportCompressedSize: false,
+    },
+    esbuild: {
+        pure: ['console.log'],
     },
     resolve: {
         alias: {
