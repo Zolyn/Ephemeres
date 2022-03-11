@@ -43,41 +43,18 @@
                     <n-layout-content
                         id="layout-content"
                         ref="layoutContentInst"
-                        v-click-outside="handleClickOutside"
                         class="!top-64px !bottom-40px"
                         position="absolute"
                         content-style="padding-top: 3.5rem; padding-bottom: 2rem;"
                         :native-scrollbar="false"
+                        @touchstart="handleTouchStart"
+                        @touchend="handleTouchEnd"
                     >
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <n-h2>海淀桥</n-h2>
-                        <!--                        <router-view v-slot="{ Component, route }">-->
-                        <!--                            <slide-x-transition :enter-duration="0.5">-->
-                        <!--                                <component :is="Component" :key="route" />-->
-                        <!--                            </slide-x-transition>-->
-                        <!--                        </router-view>-->
+                        <router-view v-slot="{ Component, route }">
+                            <slide-x-transition :enter-duration="0.5">
+                                <component :is="Component" :key="route" />
+                            </slide-x-transition>
+                        </router-view>
                         <n-back-top id="back-to-top" :bottom="60" />
                     </n-layout-content>
                     <n-layout-footer id="layout-footer" position="absolute" class="h-40px" bordered></n-layout-footer>
@@ -129,7 +106,7 @@ const layoutContentInst = ref<LayoutContentInst | null>(null);
 const scrollBarInst = computed<ScrollBarInst | null>(() =>
     layoutContentInst.value ? layoutContentInst.value.$refs.scrollbarInstRef : null,
 );
-const isScrollbarVisible = computed(() => (scrollBarInst.value ? scrollBarInst.value.isShowYBar : false));
+// const isScrollbarVisible = computed(() => (scrollBarInst.value ? scrollBarInst.value.isShowYBar : false));
 
 function emulateMouseEnter() {
     const event = new Event('mouseenter');
@@ -137,12 +114,13 @@ function emulateMouseEnter() {
 }
 
 function emulateMouseLeave() {
+    console.log('leave');
     const event = new Event('mouseleave');
     scrollBarEl!.dispatchEvent(event);
 }
 
 const debouncedEmulateMouseEnter = debounceFn(emulateMouseEnter, 100, true);
-const debouncedEmulateMouseLeave = debounceFn(emulateMouseLeave, 100, true);
+const debouncedEmulateMouseLeave = debounceFn(emulateMouseLeave, 1000);
 
 function goToHome() {
     router.push('/');
@@ -153,29 +131,36 @@ function changeTheme() {
 }
 
 // Emulate mouseenter Event to make Naive-UI style scrollbar visible when scrolling content in mobile
-function handleTouch() {
+function handleTouchStart() {
     if (isMobile.value) {
         debouncedEmulateMouseEnter();
     }
 }
 
-// Emulate mouseleave Event to make Naive-UI style scrollbar invisible when clicking outside content in mobile
-function handleClickOutside(e: Event) {
-    console.log(e);
-    const elements = e.composedPath() as Element[];
-    const id = elements[0].id || elements[1].id;
-
+function handleTouchEnd() {
+    console.log('touchend');
     if (isMobile.value) {
-        // If the element is not NBackTop, make the scrollbar invisible
-        if (id !== 'back-to-top') {
-            debouncedEmulateMouseLeave();
-        }
-        // If the element is NBackTop but the scrollbar is invisible, make it visible
-        else if (!isScrollbarVisible.value) {
-            debouncedEmulateMouseEnter();
-        }
+        debouncedEmulateMouseLeave();
     }
 }
+
+// Emulate mouseleave Event to make Naive-UI style scrollbar invisible when clicking outside content in mobile
+// function handleClickOutside(e: Event) {
+//     console.log(e);
+//     const elements = e.composedPath() as Element[];
+//     const id = elements[0].id || elements[1].id;
+//
+//     if (isMobile.value) {
+//         // If the element is not NBackTop, make the scrollbar invisible
+//         if (id !== 'back-to-top') {
+//             debouncedEmulateMouseLeave();
+//         }
+//         // If the element is NBackTop but the scrollbar is invisible, make it visible
+//         else if (!isScrollbarVisible.value) {
+//             debouncedEmulateMouseEnter();
+//         }
+//     }
+// }
 
 function scroll(options: ScrollToOptions): void {
     layoutContentInst.value!.scrollTo(options);
