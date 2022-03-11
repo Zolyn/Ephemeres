@@ -48,13 +48,36 @@
                         position="absolute"
                         content-style="padding-top: 3.5rem; padding-bottom: 2rem;"
                         :native-scrollbar="false"
-                        @touchstart="handleTouch"
                     >
-                        <router-view v-slot="{ Component, route }">
-                            <slide-x-transition :enter-duration="0.5">
-                                <component :is="Component" :key="route" />
-                            </slide-x-transition>
-                        </router-view>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <n-h2>海淀桥</n-h2>
+                        <!--                        <router-view v-slot="{ Component, route }">-->
+                        <!--                            <slide-x-transition :enter-duration="0.5">-->
+                        <!--                                <component :is="Component" :key="route" />-->
+                        <!--                            </slide-x-transition>-->
+                        <!--                        </router-view>-->
                         <n-back-top id="back-to-top" :bottom="60" />
                     </n-layout-content>
                     <n-layout-footer id="layout-footer" position="absolute" class="h-40px" bordered></n-layout-footer>
