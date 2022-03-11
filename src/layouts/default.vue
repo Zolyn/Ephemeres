@@ -48,7 +48,7 @@
                         position="absolute"
                         content-style="padding-top: 3.5rem; padding-bottom: 2rem;"
                         :native-scrollbar="false"
-                        @scroll="handleScroll"
+                        @touchstart="handleTouch"
                     >
                         <router-view v-slot="{ Component, route }">
                             <slide-x-transition :enter-duration="0.5">
@@ -74,12 +74,15 @@ import emitter from '~/eventbus';
 import useMainStore from '~/stores/main';
 import { debounceFn, useIsMobile } from '~/utils';
 
+interface ScrollBarInst {
+    containerScrollTop: number;
+    isShowYBar: boolean;
+}
+
 interface LayoutContentInst {
     scrollTo: ((options: ScrollToOptions) => void) & ((x: number, y: number) => void);
     $refs: {
-        scrollbarInstRef: {
-            containerScrollTop: number;
-        };
+        scrollbarInstRef: ScrollBarInst;
     };
 }
 
@@ -100,6 +103,10 @@ const themeIcon = computed(() => (mainStore.theme === 'dark' ? Moon : Sunny));
 let scrollBarEl: HTMLDivElement | null;
 const scrollBarWidth = computed(() => (isMobile.value ? '3px' : '5px'));
 const layoutContentInst = ref<LayoutContentInst | null>(null);
+const scrollBarInst = computed<ScrollBarInst | null>(() =>
+    layoutContentInst.value ? layoutContentInst.value.$refs.scrollbarInstRef : null,
+);
+const isScrollbarVisible = computed(() => (scrollBarInst.value ? scrollBarInst.value.isShowYBar : false));
 
 function emulateMouseEnter() {
     const event = new Event('mouseenter');
@@ -123,7 +130,7 @@ function changeTheme() {
 }
 
 // Emulate mouseenter Event to make Naive-UI style scrollbar visible when scrolling content in mobile
-function handleScroll() {
+function handleTouch() {
     if (isMobile.value) {
         debouncedEmulateMouseEnter();
     }
@@ -131,12 +138,19 @@ function handleScroll() {
 
 // Emulate mouseleave Event to make Naive-UI style scrollbar invisible when clicking outside content in mobile
 function handleClickOutside(e: Event) {
+    console.log(e);
     const elements = e.composedPath() as Element[];
     const id = elements[0].id || elements[1].id;
 
-    // Exclude NBackTop component
-    if (isMobile.value && id !== 'back-to-top') {
-        debouncedEmulateMouseLeave();
+    if (isMobile.value) {
+        // If the element is not NBackTop, make the scrollbar invisible
+        if (id !== 'back-to-top') {
+            debouncedEmulateMouseLeave();
+        }
+        // If the element is NBackTop but the scrollbar is invisible, make it visible
+        else if (!isScrollbarVisible.value) {
+            debouncedEmulateMouseEnter();
+        }
     }
 }
 
@@ -146,7 +160,7 @@ function scroll(options: ScrollToOptions): void {
 
 function savePositionFn(key: string): void {
     mainStore.savedPositionMap.set(key, {
-        top: layoutContentInst.value!.$refs.scrollbarInstRef.containerScrollTop,
+        top: scrollBarInst.value!.containerScrollTop,
         behavior: 'smooth',
     });
 }
