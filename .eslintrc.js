@@ -34,5 +34,11 @@ module.exports = {
         'no-use-before-define': 'off',
         'no-restricted-syntax': 'off',
         'max-classes-per-file': 'off',
+        'class-methods-use-this': 'off',
+        // Fix incorrect eslint hint
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'error',
+        // Reactivity transform
+        'vue/no-setup-props-destructure': 'off',
     },
 };

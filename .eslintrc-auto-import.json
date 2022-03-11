@@ -64,6 +64,8 @@
     "reactify": "readonly",
     "reactifyObject": "readonly",
     "reactive": "readonly",
+    "reactiveComputed": "readonly",
+    "reactiveOmit": "readonly",
     "reactivePick": "readonly",
     "readonly": "readonly",
     "ref": "readonly",
