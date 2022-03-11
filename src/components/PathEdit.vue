@@ -1,6 +1,6 @@
 <template>
     <div class="path-edit">
-        <n-button quaternary circle @click="showModal = true">
+        <n-button :disabled="mainStore.isLoading" quaternary circle @click="showModal = true">
             <template #icon>
                 <n-icon :component="Edit16Filled" />
             </template>
@@ -23,6 +23,9 @@
 
 <script lang="ts" setup>
 import { Edit16Filled } from '@vicons/fluent';
+import useMainStore from '~/stores/main';
+
+const mainStore = useMainStore();
 
 const formValue = ref({
     path: '',
