@@ -4,7 +4,7 @@
             <n-dialog-provider>
                 <n-layout position="absolute">
                     <n-layout-header class="h-64px" bordered>
-                        <div id="layout-header" class="flex-c py-4 px-6 justify-between">
+                        <div id="layout-header" class="flex-center py-4 px-6 justify-between">
                             <div id="layout-header-front" class="flex w-3/5 gap-x-3">
                                 <div
                                     id="layout-header-front__title"
@@ -25,7 +25,7 @@
                                     <slide-y-transition :enter-duration="0.5" reverse> </slide-y-transition>
                                 </div>
                             </div>
-                            <div id="layout-header-end" class="flex-c">
+                            <div id="layout-header-end" class="flex-center">
                                 <slide-y-transition :enter-duration="0.5" reverse>
                                     <path-edit v-show="!mainStore.isBreadCrumbVisible" />
                                 </slide-y-transition>

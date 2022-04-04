@@ -1,4 +1,5 @@
 import { PlainDirectoryMeta, PlainFileMeta, ProviderList } from '~/types/shared';
+import { BaseTransitionProps, CommonTransitionProps, SlideTransitionProps } from '~/types/transition';
 
 interface BreadCrumbItem {
     id: string;
@@ -29,21 +30,6 @@ interface EphemeresConfig {
     backend: string;
     providerUrls: Partial<Record<ProviderList, string>>;
     defaultProvider?: ProviderList;
-}
-
-interface BaseTransitionProps {
-    mode?: 'in-out' | 'out-in';
-    appear?: boolean;
-}
-
-interface CommonTransitionProps extends BaseTransitionProps {
-    enterDuration?: number;
-    leaveDuration?: number;
-}
-
-interface SlideTransitionProps extends CommonTransitionProps {
-    offset?: number;
-    reverse?: boolean;
 }
 
 export type {

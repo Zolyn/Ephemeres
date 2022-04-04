@@ -7,8 +7,7 @@ declare global {
     }
 }
 
-const isReport = process.env.EPH_REPORT;
+const isReport = !!process.env.EPH_REPORT;
 const isClient = process.env.EPH_TARGET ? process.env.EPH_TARGET.includes('client') : null;
-const isStatic = process.env.EPH_TARGET ? process.env.EPH_TARGET.includes('static') : false;
 
-export { isReport, isClient, isStatic };
+export { isReport, isClient };

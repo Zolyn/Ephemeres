@@ -72,13 +72,12 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
 
             const { appHtml, cssHtml, preloadLinks, renderedHead } = await render(url, manifest);
 
-            console.log(preloadLinks);
             const html = template
                 .replace(`<!--preload-links-->`, preloadLinks)
                 .replace(`<!--head-meta-->`, renderedHead.headTags)
                 .replace(`<!--css-html-->`, cssHtml)
                 .replace(`<!--app-html-->`, appHtml)
-                .replace(`<html>`, `<html${renderedHead.htmlAttrs}>`)
+                .replace(`<html lang="en">`, `<html${renderedHead.htmlAttrs}>`)
                 .replace(`<body>`, `<body${renderedHead.bodyAttrs}>`);
 
             res.status(200).set({ 'Content-Type': 'text/html' }).end(html);

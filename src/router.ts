@@ -1,10 +1,9 @@
 // https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/router.js
-import { createMemoryHistory, createRouter as _createRouter, createWebHistory, START_LOCATION } from 'vue-router';
+import { createMemoryHistory, createRouter as _createRouter, createWebHistory } from 'vue-router';
 import { setupLayouts } from 'layouts-generated';
 import pageRoutes from '~pages';
 import emitter, { RouteInfo } from '~/eventbus';
 import { decodeRouteLocation } from '~/utils';
-import { useIsMobile } from '~/utils/composables';
 
 const routes = setupLayouts(pageRoutes);
 

@@ -1,5 +1,5 @@
 // https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/entry-server.js
-import { renderToString, SSRContext } from '@vue/server-renderer';
+import { renderToString, SSRContext } from 'vue/server-renderer';
 import { setup } from '@css-render/vue3-ssr';
 import { basename } from 'path';
 import { renderHeadToString } from '@vueuse/head';
