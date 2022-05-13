@@ -1,7 +1,7 @@
 import camelcase from 'camelcase';
 import { dirname, parse } from 'path';
 import fs from 'fs';
-import { Extension, generateImportStatements } from '~/scripts/generateImports';
+import { Extension, generateImportStatements } from './generateImports';
 
 function updatePluginsIndex(
     path: string,
