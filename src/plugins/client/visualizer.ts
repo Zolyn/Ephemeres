@@ -1,5 +1,5 @@
 import Visualizer from 'rollup-plugin-visualizer';
-import { isReport } from '../../../../constants';
+import { isReport } from '../../constants';
 
 const createVisualizer = () =>
     isReport

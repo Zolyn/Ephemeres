@@ -1,6 +1,6 @@
 import { UserConfig } from 'vite';
 import { extendConfig } from './common';
-import { getClientPlugins } from './plugins/client';
+import { getClientPlugins } from '../../plugins/client';
 
 function getClientConfig(): UserConfig {
     return extendConfig({

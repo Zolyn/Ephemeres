@@ -1,5 +1,5 @@
 import ManualChunksCompletion from 'vite-plugin-manual-chunks-completion';
-import { dependencies } from '../../../../../package.json';
+import { dependencies } from '../../../package.json';
 
 export default ManualChunksCompletion({
     dependencies,

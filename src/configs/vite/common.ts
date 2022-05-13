@@ -1,7 +1,7 @@
 import { UserConfig } from 'vite';
 import { resolve } from 'path';
 import { deepMerge } from '../../utils';
-import { getCommonPlugins } from './plugins/common';
+import { getCommonPlugins } from '../../plugins/common';
 
 const commonConfig: UserConfig = {
     plugins: getCommonPlugins(),
